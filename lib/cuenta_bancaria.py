@@ -3,8 +3,8 @@ from lib.constantes import Constantes
 
 class CuentaBancaria:
     def __init__(self, iban: str, titular: str):
-        self.iban: str = iban # porque esto no va y sin linea abajo va
-        self.titular: str = titular
+        self._iban: str = 0 # poner aquí un comprobar iban def
+        self._titular: str = titular
         self._saldo: float = 0.0
         self._movimientos: list[float] = []
 
@@ -12,35 +12,9 @@ class CuentaBancaria:
     def iban(self):
         return self._iban
 
-    @iban.setter
-    def iban(self, valor):
-        if (valor[0] in Constantes.VALORES_ALFABETICOS_IBAN and
-                valor[1] in Constantes.VALORES_ALFABETICOS_IBAN and
-                valor[2 : ].isnumeric() and len(valor) ==
-                Constantes.LONGITUD_IBAN):
-            self._iban = valor
-        else:
-            print('Error: IBAN introducido incorrectamente, intentalo de '
-                    'nuevo.')
-            self._iban = None
-
     @property
     def titular(self):
         return self._titular
-
-    @titular.setter
-    def titular(self, valor):
-        # Suponemos que para comprobar que es un nombre completo vamos a ver
-        # si tiene como mínimo un espacio en blanco entre un supuesto nombre
-        # y apellido. Además, el espacio en blanco no puede estar al
-        # principio o al final.
-        if valor.find(' ', 1, len(valor)-1) != -1 and not valor.replace(' ',
-                                                                        '') == '':
-            self._titular = valor
-        else:
-            print("Error: nombre introducido incorrectamente, intentalo de "
-                  "nuevo")
-            self._titular = None
 
     # cambios en el saldo y registro en los movimientos
     def introducir_ingreso(self, ingreso):
@@ -79,5 +53,5 @@ class CuentaBancaria:
                 print(f"{contador}. Ingreso: {movimiento}€")
             contador += 1
 
-# cuenta = CuentaBancaria('123', 'abcabc abc abc')
-# print(cuenta.iban, cuenta.titular)
+cuenta = CuentaBancaria('123', 'abcabc abc abc')
+print(cuenta.iban, cuenta.titular)
