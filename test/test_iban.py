@@ -3,7 +3,7 @@ from lib.cuenta_bancaria import CuentaBancaria
 
 class MyTestCase(unittest.TestCase):
     def test_iban_correcto(self):
-        iban1 = "ES1234567890123456789012"
+        iban1 = "ES 123 456 789 0123 456789012"
         self.cuenta = CuentaBancaria(iban1,'A B')
         self.assertEqual(self.cuenta.iban, iban1)
 
