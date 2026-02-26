@@ -16,10 +16,18 @@ class CuentaBancaria:
     def titular(self):
         return self._titular
 
+    @property
+    def saldo(self):
+        return self._saldo
+
+    @property
+    def movimientos(self):
+        return self._movimientos
+
     def _comprobar_iban(self, valor):
-        patron = re.compile(r'[A-Z]{2}\d{22}')
+        patron = re.compile(r'^[A-Z]{2}\d{22}$')
         valor1 = valor.replace(' ', '')
-        if len(valor1) == Constantes.LONGITUD_IBAN and patron.match(valor1):
+        if patron.match(valor1):
             return valor
         else:
             return None
@@ -55,19 +63,9 @@ class CuentaBancaria:
             # borramos el historial después de realizar más de 100 movimientos
             self._movimientos = []
 
-    def imprimir_movimientos(self): # hacerlo en DawBank y hacerle un return
-        # no un print mejor
-        if len(self._movimientos) == 0:
-            print("No tiene movimientos registrados")
-        contador: int = 1
-        for movimiento in self._movimientos:
-            if movimiento < 0:
-                print(f"{contador}. Retirada: {- movimiento}€")
-            else:
-                print(f"{contador}. Ingreso: {movimiento}€")
-            contador += 1
+
 
 cuenta = CuentaBancaria('ES1234567890123456789012345555', 'abcabc abc abc')
 print(cuenta.iban, cuenta.titular)
-cuenta.introducir_ingreso(90)
-cuenta.imprimir_movimientos()
+cuenta.introducir_ingreso(90.0)
+print(cuenta.movimientos)

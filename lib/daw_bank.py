@@ -1,3 +1,5 @@
+from lib.cuenta_bancaria import CuentaBancaria
+
 class DawBank:
     def main(self):
         pass
@@ -14,3 +16,14 @@ class DawBank:
               "6. Retirada.\n"
               "7. Movimientos.\n"
               "8. Salir. ")
+
+    # def imprimir_movimientos(self):
+    #     if len(CuentaBancaria.movimientos) == 0:
+    #         print("No tiene movimientos registrados")
+    #     contador: int = 1
+    #     for movimiento in CuentaBancaria.movimientos:
+    #         if movimiento < 0:
+    #             print(f"{contador}. Retirada: {- movimiento}€")
+    #         else:
+    #             print(f"{contador}. Ingreso: {movimiento}€")
+    #         contador += 1
