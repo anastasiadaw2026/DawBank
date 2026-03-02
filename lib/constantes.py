@@ -5,5 +5,5 @@ class Constantes:
                                            'V', 'W', 'X', 'Y', 'Z']
     LONGITUD_IBAN: int = 24
     MAXIMO_MOVIMIENTOS = 100
-    SALDO_MINIMO = - 50
+    SALDO_MINIMO = -50
     INGRESO_MAXIMO = 3000

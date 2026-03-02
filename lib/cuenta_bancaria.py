@@ -4,7 +4,7 @@ import re
 class CuentaBancaria:
     def __init__(self, iban: str, titular: str):
         self._iban: str = self._comprobar_iban(iban)
-        self._titular: str = titular
+        self._titular: str = self._comprobar_titular(titular)
         self._saldo: float = 0.0
         self._movimientos: list[float] = []
 
@@ -30,42 +30,36 @@ class CuentaBancaria:
         if patron.match(valor1):
             return valor
         else:
-            return None
+            return ''
 
     def _comprobar_titular(self, valor):
-        pass
+        patron = re.compile(r'^[A-ZÉÍÁÓÚ][a-zñáéíóú]+[ ]['
+                            r'A-Za-zÁÉÍÓÚÑáéíóúñ^\s]+$')
+        if patron.match(valor):
+            return valor
+        else:
+            return ''
 
     # cambios en el saldo y registro en los movimientos
+    def _aniadir_movimiento(self, movimiento):
+        if len(self._movimientos) > Constantes.MAXIMO_MOVIMIENTOS:
+            self._movimientos = []
+        self._movimientos += [movimiento]
+
     def introducir_ingreso(self, ingreso):
         if ingreso > 0 and isinstance(ingreso, float):
             self._saldo += ingreso
             if ingreso > Constantes.INGRESO_MAXIMO:
                 print("AVISO: Notificar a hacienda.")
-            self.comprobar_movimientos()
-            self._movimientos.append(ingreso)
-        else:
-            print("Error: el ingreso introducido no es un valor numérico o "
-                  "es un valor negativo, intentalo de nuevo.")
+            self._aniadir_movimiento(ingreso)
+            return True
+        return False
 
     def introducir_retirada(self, retirada):
         if retirada > 0 and isinstance(retirada, float):
             self._saldo -= retirada
             if self._saldo <= Constantes.SALDO_MINIMO:
                 print("AVISO: Saldo negativo.")
-            self.comprobar_movimientos()
-            self._movimientos.append(- retirada)
-        else:
-            print("Error: la retirada introducida no es un valor "
-                  "numérico o es un valor negativo, intentalo de nuevo.")
-
-    def comprobar_movimientos(self):
-        if len(self._movimientos) > Constantes.MAXIMO_MOVIMIENTOS:
-            # borramos el historial después de realizar más de 100 movimientos
-            self._movimientos = []
-
-
-
-cuenta = CuentaBancaria('ES1234567890123456789012345555', 'abcabc abc abc')
-print(cuenta.iban, cuenta.titular)
-cuenta.introducir_ingreso(90.0)
-print(cuenta.movimientos)
+            self._aniadir_movimiento(-retirada)
+            return True
+        return False
